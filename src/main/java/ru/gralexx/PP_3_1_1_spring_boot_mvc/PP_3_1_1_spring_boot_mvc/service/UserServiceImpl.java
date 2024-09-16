@@ -1,5 +1,6 @@
 package ru.gralexx.PP_3_1_1_spring_boot_mvc.PP_3_1_1_spring_boot_mvc.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User getUserById(int id) {
-        return userDao.getUserById(id);
+        User userById = userDao.getUserById(id);
+        if (userById == null) {
+            throw new EntityNotFoundException();
+        }
+        return userById;
     }
 
     @Override
